@@ -20,9 +20,31 @@ jobs:
       - name: Run Tests
         run: python -m unittest discover
 
+      - name: Start SonarQube Server
+        run: |
+          docker run -d --name sonar \
+            -p 9000:9000 \
+            sonarqube:lts
+          sleep 30  # Wait for SonarQube to fully start
+
       - name: SonarQube Scan
         run: |
           docker run --rm \
+            --network=host \
             -e SONAR_HOST_URL="http://localhost:9000" \
-            -e SONAR_LOGIN="${{ secrets.SONAR_TOKEN }}" \
+            -e SONAR_LOGIN="${{ secrets.SONARTOKEN }}" \
             sonarsource/sonar-scanner-cli
+
+      - name: AI Code Review
+        run: python ai_code_review.py
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Render
+        run: curl -X POST ${{  }}
+
+
