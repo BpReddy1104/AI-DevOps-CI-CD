@@ -4,7 +4,7 @@ import os
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def review_code(file_path):
-    with open("C:\Users\bpred\AI-DevOps-CI-CD\AI-DevOps-CI-CD\app.py", "r") as file:  
+    with open("C:\\Users\\bpred\\AI-DevOps-CI-CD\\AI-DevOps-CI-CD\\app.py", "r") as file:
 
         code = file.read()
 
